@@ -7,6 +7,7 @@
 class PrintPhotos : public QObject
 {
     Q_OBJECT
+
 public:
     explicit PrintPhotos(QObject *parent = nullptr);
 

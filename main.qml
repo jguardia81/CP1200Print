@@ -8,10 +8,11 @@ ApplicationWindow {
     width: 640
     height: 480
     title: qsTr("Selphy CP 1200 Printer")
-  signal qmlSignal(var anObject)
+    signal qmlSignal(var anObject)
 
     id: principalForm
     Rectangle  {
+        id: myRect
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
@@ -19,32 +20,33 @@ ApplicationWindow {
         anchors.margins: 10
         color: "lightgrey"
         border.color: "black"
+        property bool busy: false
+
 
         ListModel  {
             id: photoModel
-
-
+            objectName: "photoModel"
         }
 
+        BusyIndicator {
+            running: myRect.busy === true
+        }
         DropArea  {
-             property bool busy: false
-            BusyIndicator {
-                running: busy == true
-            }
+
             anchors.fill: parent
             onDropped:  {
 
 
                 if (drop.hasUrls) {
 
-                    busy = true
+                    myRect.busy = true
                     for (var index = 0; index < drop.urls.length; index++) {
                         photoModel.append({
                                               'Url': drop.urls[index]
                                           })
                     }
 
-                    busy = false
+                    myRect.busy = false
                 }
             }
 

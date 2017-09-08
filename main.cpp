@@ -2,7 +2,7 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
+#include <QQmlContext>
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -14,9 +14,10 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
+    QVariant variant = engine.rootContext()->contextProperty("photoModel");
 
-    const QObject* rootObject = engine.rootObjects().at(0);
-    PrintPhotos printPhotos;
+    QObject* rootObject = engine.rootObjects().at(0);
+    PrintPhotos printPhotos(rootObject);
     QObject::connect(rootObject, SIGNAL(qmlSignal(QVariant)),&printPhotos, SLOT(onPrintClicked(QVariant)));
     return app.exec();
 }
