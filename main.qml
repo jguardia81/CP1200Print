@@ -30,9 +30,13 @@ ApplicationWindow {
             onDropped:  {
                 if (drop.hasUrls) {
 
-                    photoModel.append({
-                                          'Url': drop.urls[0]
-                                      })
+                    console.log(drop.urls.length)
+
+                    for (var index = 0; index < drop.urls.length; index++) {
+                        photoModel.append({
+                                              'Url': drop.urls[index]
+                                          })
+                    }
                 }
             }
 
@@ -69,17 +73,30 @@ ApplicationWindow {
         id: myDelegate
 
         Rectangle {
-            width: selectedImages.width - 10
+            border.color: "black"
+            width: selectedImages.width
             height: 100
             color: "lightgrey"
 
             Image {
-               anchors.fill: parent
-                id: name
-                source: Url
                 anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                id: photo
+                source: Url
+
                 anchors.margins: 5
                 fillMode: Image.PreserveAspectFit
+            }
+            Text {
+                text:Url
+                anchors.left: photo.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                anchors.margins: 10
+                verticalAlignment: Text.AlignVCenter
+                wrapMode:  Text.WrapAtWordBoundaryOrAnywhere
             }
         }
     }
