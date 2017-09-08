@@ -21,7 +21,7 @@ ApplicationWindow {
         anchors.margins: 10
         color: "lightgrey"
         border.color: "black"
-        property bool busy: false
+      //  property bool busy: false
 
 
         ListModel  {
@@ -38,25 +38,26 @@ ApplicationWindow {
 
                 if (drop.hasUrls) {
 
-                    myRect.busy = true
+                   // myRect.busy = true
                     for (var index = 0; index < drop.urls.length; index++) {
+
                         photoModel.append({
                                               'Url': drop.urls[index]
                                           })
                     }
 
-                    myRect.busy = false
+//                    myRect.busy = false
                 }
             }
 
+
             ListView {
                 BusyIndicator {
-                    visible: myRect.busy
-                    running: myRect.busy === true
-                    anchors.fill: parent
-                    z: myRect === true ? 100: 0
+                    running: loader.status === Loader.Loading
+                    anchors.centerIn: parent
+
                 }
-                visible: true
+                visible:  loader.status === Loader.Ready
                 id: selectedImages
                 model: photoModel
                 anchors.fill: parent
@@ -98,36 +99,41 @@ ApplicationWindow {
             photoModel.clear()
         }
     }
-    Component {
-        id: myDelegate
+    Loader  {
+        id:loader
+        asynchronous: true
+        sourceComponent:  Component {
+            id: myDelegate
 
-        Rectangle {
-            border.color: "black"
-            width: selectedImages.width
-            height: 100
-            color: "lightgrey"
+            Rectangle {
+                border.color: "black"
+                width: selectedImages.width
+                height: 100
+                color: "lightgrey"
 
-            Image {
+                Image {
 
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                id: photo
-                source: Url
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    id: photo
+                    source: Url
 
-                anchors.margins: 5
-                fillMode: Image.PreserveAspectFit
-            }
-            Text {
-                text:Url
-                anchors.left: photo.right
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
-                anchors.margins: 10
-                verticalAlignment: Text.AlignVCenter
-                wrapMode:  Text.WrapAtWordBoundaryOrAnywhere
+                    anchors.margins: 5
+                    fillMode: Image.PreserveAspectFit
+                }
+                Text {
+                    text:Url
+                    anchors.left: photo.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    anchors.margins: 10
+                    verticalAlignment: Text.AlignVCenter
+                    wrapMode:  Text.WrapAtWordBoundaryOrAnywhere
+                }
             }
         }
     }
+
 }
