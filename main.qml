@@ -11,6 +11,7 @@ ApplicationWindow {
     signal qmlSignal(var anObject)
 
     id: principalForm
+
     Rectangle  {
         id: myRect
         anchors.top: parent.top
@@ -28,9 +29,7 @@ ApplicationWindow {
             objectName: "photoModel"
         }
 
-        BusyIndicator {
-            running: myRect.busy === true
-        }
+
         DropArea  {
 
             anchors.fill: parent
@@ -51,6 +50,12 @@ ApplicationWindow {
             }
 
             ListView {
+                BusyIndicator {
+                    visible: myRect.busy
+                    running: myRect.busy === true
+                    anchors.fill: parent
+                    z: myRect === true ? 100: 0
+                }
                 visible: true
                 id: selectedImages
                 model: photoModel
@@ -80,6 +85,17 @@ ApplicationWindow {
         anchors.margins: 10
         onClicked: {
             Qt.quit()
+        }
+    }
+    Button {
+        visible: true
+        id:clearButton
+        text: qsTr("Clear")
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        onClicked: {
+            photoModel.clear()
         }
     }
     Component {
