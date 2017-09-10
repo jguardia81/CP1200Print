@@ -19,7 +19,6 @@ void PrintPhotos::onPrintClicked(QVariant variant)
             QModelIndex modelIndex = modelObject->index(i,0);
 
             QUrl url(modelIndex.data().toString());
-            qDebug() << url.path();
             QStringList args;
             args << "-dCanon_SELPHY_CP1200" << "-oraw" << url.toLocalFile();
             QProcess::execute(QString("/usr/bin/lp"),args);
